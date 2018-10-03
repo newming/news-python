@@ -1,0 +1,81 @@
+{% extends 'admin/base.html' %}
+{% block head %}
+<title>后台管理首页</title>
+{% endblock %}
+{% block content %}
+<table>
+    <thead>
+    <tr>
+        <th>编号</th>
+        <th>新闻标题</th>
+        <th>类别</th>
+        <th>添加时间</th>
+        <th>状态</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for new_obj in news_list.items %}
+    <tr>
+        <td>{{ new_obj.id }}</td>
+        <td>{{ new_obj.title }}</td>
+        <td>{{ new_obj.types }}</td>
+        <td>{{ new_obj.created_at }}</td>
+        {% if new_obj.is_valid %}
+            <td>正常</td>
+        {% else %}
+            <td>已删除</td>
+        {% endif %}
+        <td>
+            <a href="{{ url_for('update', pk=new_obj.id) }}">修改</a>
+            <a class="del" href="javascript:;" data-url="{{ url_for('delete', pk=new_obj.id) }}">删除</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<div>
+    <p>pagination 对象 <a href="http://flask-sqlalchemy.pocoo.org/2.3/api/#utilities">文档</a></p>
+    <p>has_prev: {{ news_list.has_prev }}</p>
+    <p>has_next: {{ news_list.has_next }}</p>
+    <p>pages: {{ news_list.pages }}</p>
+    <p>per_page: {{ news_list.per_page }}</p>
+    <p>
+        {%- for page in news_list.iter_pages() %}
+        {% if page %}
+        {% if page != news_list.page %}
+        <a href="{{ url_for('admin', page=page) }}">{{ page }}</a>
+        {% else %}
+        <strong>{{ page }}</strong>
+        {% endif %}
+        {% else %}
+        <span class=ellipsis>…</span>
+        {% endif %}
+        {%- endfor %}
+    </p>
+</div>
+{% endblock %}
+{% block extraljs %}
+<script>
+    var btns = document.querySelectorAll('a.del')
+    btns.forEach(function (btn) {
+        btn.onclick = function (e) {
+            var r = window.confirm('确定删除吗')
+            if (r) {
+                let url = e.target.dataset.url
+                fetch(url).then(val => {
+                    return val.text()
+                }).then(text => {
+                    console.log(text)
+                    if (text === 'yes') {
+                        alert('删除成功')
+                        window.location.reload()
+                    }
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
+        }
+    })
+</script>
+{% endblock %}

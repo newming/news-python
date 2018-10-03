@@ -1,0 +1,28 @@
+{% extends 'admin/base.html' %}
+{% block title %}
+<title>更新新闻</title>
+{% endblock %}
+{% block content %}
+<form action="/admin/update/{{ pk }}" method="post">
+    <div>
+        <label for="">{{ form.title.label.text }}</label>
+        {{ form.title }}
+    </div>
+    <div>
+        <label for="">{{ form.content.label.text }}</label>
+        {{ form.content }}
+    </div>
+    <div>
+        <label for="">{{ form.types.label.text }}</label>
+        {{ form.types }}
+    </div>
+    <div>
+        <label for="">{{ form.image.label.text }}</label>
+        {{ form.image }}
+    </div>
+    <div>
+        {{ form.csrf_token }}
+        {{ form.submit }}
+    </div>
+</form>
+{% endblock %}

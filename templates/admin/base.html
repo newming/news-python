@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block head %}
+    <title>后台管理</title>
+    {% endblock %}
+</head>
+<body>
+<div>
+    <ul>
+        <li><a href={{ url_for('index') }}>首页</a></li>
+        <li><a href="{{ url_for('admin') }}">后台首页</a></li>
+        <li><a href="{{ url_for('add') }}">新增新闻</a></li>
+    </ul>
+</div>
+{% block content %}
+{% endblock %}
+
+{% block extraljs %}
+<!--其他脚本-->
+{% endblock %}
+</body>
+</html>
